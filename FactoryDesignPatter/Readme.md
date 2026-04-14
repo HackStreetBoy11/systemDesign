@@ -1,0 +1,1 @@
+The Factory Design Pattern is a way to create objects without directly using new, by using a special method (factory) that decides which object to create.
