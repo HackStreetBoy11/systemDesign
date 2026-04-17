@@ -15,15 +15,19 @@ private:
 public:
     static Singleton *getInstance()
     {
-        lock_guard<mutex> lock(mtx); // lock for thread safety
-        if (instance == nullptr)
-            instance = new Singleton(); // build a pointer instances which has the value of hte obj, recall it will give the same obj not the new one
+        if (instance == nullptr){
+            lock_guard<mutex> lock(mtx); // lock for thread safety
+            if(instance==nullptr)
+                instance = new Singleton(); // build a pointer instances which has the value of hte obj, recall it will give the same obj not the new one
+        }
         return instance;
     }
 };
 
 Singleton *Singleton ::instance = nullptr;
 mutex Singleton::mtx;
+
+// Singleton* Singleton:: instance = new Singleton(); // egar inisilization
 
 int main()
 {
