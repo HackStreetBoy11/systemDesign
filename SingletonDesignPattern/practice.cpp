@@ -1,15 +1,34 @@
-#include<iostream>
+#include <iostream>
+#include <mutex>
 using namespace std;
 
-class Singleton{
-    public:
-        Singleton(){
-            cout<<"You called Singleton class"<<endl;
-        }
-};
-int main(){
-    Singleton* obj = new Singleton();
-    Singleton* obj1 = new Singleton();
+class Singleton
+{
+private:
+    static Singleton *instance;
+    static mutex mtx;
+    Singleton()
+    {
+        cout << "You called Singleton class" << endl;
+    }
 
-    cout<<(obj==obj1)<<endl;
+public:
+    static Singleton *getInstance()
+    {
+        lock_guard<mutex> lock(mtx); // lock for thread safety
+        if (instance == nullptr)
+            instance = new Singleton(); // build a pointer instances which has the value of hte obj, recall it will give the same obj not the new one
+        return instance;
+    }
+};
+
+Singleton *Singleton ::instance = nullptr;
+mutex Singleton::mtx;
+
+int main()
+{
+    Singleton *obj = Singleton::getInstance();
+    Singleton *obj1 = Singleton::getInstance();
+
+    cout << (obj == obj1) << endl;
 }
